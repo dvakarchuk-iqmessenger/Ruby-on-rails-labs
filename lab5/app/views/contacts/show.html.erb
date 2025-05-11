@@ -1,0 +1,11 @@
+<h2><%= @contact.name %></h2>
+
+<h4>Номери телефону:</h4>
+<ul>
+  <% @contact.phone_numbers.each do |pn| %>
+    <li><%= pn.number %></li>
+  <% end %>
+</ul>
+
+<%= link_to 'Редагувати', edit_contact_path(@contact), class: "btn btn-primary" %>
+<%= link_to 'На головну', contacts_path, class: "btn btn-secondary" %>

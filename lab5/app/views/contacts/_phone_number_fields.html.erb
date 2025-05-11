@@ -1,0 +1,10 @@
+<div class="phone-number-group mb-2 d-flex align-items-center">
+  <%= f.text_field :number, class: "form-control me-2", placeholder: "+380501234567" %>
+
+  <% if f.object && f.object.persisted? %>
+    <%= f.check_box :_destroy, class: "form-check-input me-1" %>
+    <%= f.label :_destroy, "Видалити", class: "form-check-label me-2" %>
+  <% else %>
+    <button type="button" class="btn btn-outline-danger btn-sm remove-phone-number">✖</button>
+  <% end %>
+</div>

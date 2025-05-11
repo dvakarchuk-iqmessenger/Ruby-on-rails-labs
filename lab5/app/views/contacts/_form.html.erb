@@ -1,0 +1,26 @@
+<%= form_with(model: contact, local: true) do |f| %>
+  <div class="mb-3">
+    <%= f.label :name, "Ім'я" %>
+    <%= f.text_field :name, class: "form-control #{'is-invalid' if contact.errors[:name].any?}" %>
+    <% if contact.errors[:name].any? %>
+      <div class="invalid-feedback">
+        <%= contact.errors[:name].first %>
+      </div>
+    <% end %>
+  </div>
+
+  <h5>Номери телефону:</h5>
+  <div id="phone-numbers">
+    <%= f.fields_for :phone_numbers do |pn| %>
+      <%= render 'phone_number_fields', f: pn %>
+    <% end %>
+  </div>
+
+  <div class="mb-3">
+    <button type="button" class="btn btn-outline-primary" id="add-phone-number">➕ Додати номер</button>
+  </div>
+
+  <%= f.submit class: "btn btn-success" %>
+<% end %>
+
+<%= render 'phone_number_template' %>

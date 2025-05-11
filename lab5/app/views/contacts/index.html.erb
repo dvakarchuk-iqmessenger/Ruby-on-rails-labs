@@ -1,0 +1,25 @@
+<h1>Контакти</h1>
+<%= link_to 'Новий контакт', new_contact_path, class: "btn btn-success mb-3" %>
+
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th>Ім’я</th>
+    <th>Дії</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @contacts.each do |contact| %>
+    <tr>
+      <td><%= contact.name %></td>
+      <td>
+        <%= link_to 'Показати', contact, class: "btn btn-info btn-sm d-inline" %>
+        <%= link_to 'Редагувати', edit_contact_path(contact), class: "btn btn-warning btn-sm d-inline" %>
+        <%= form_with(model: contact, method: :delete, local: true, class: 'd-inline') do |form| %>
+          <%= form.submit 'Видалити', class: 'btn btn-danger btn-sm' %>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

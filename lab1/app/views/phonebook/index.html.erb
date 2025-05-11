@@ -1,0 +1,39 @@
+<h1>Телефонний довідник</h1>
+
+<h2>Додати / Редагувати контакт</h2>
+<%= form_with url: '/phonebook/add', method: :post do %>
+  Ім'я: <%= text_field_tag :name %>
+  Телефони (через кому): <%= text_field_tag :numbers %>
+  <%= submit_tag "Додати" %>
+<% end %>
+
+<h2>Пошук</h2>
+<%= form_with url: '/phonebook/search', method: :get do %>
+  <%= text_field_tag :term %>
+  <%= submit_tag "Шукати" %>
+<% end %>
+
+<h2>Контакти</h2>
+<ul>
+  <% @contacts.each do |name, numbers| %>
+    <li>
+      <strong><%= name %></strong>: <%= numbers.join(', ') %>
+      <%= form_with url: '/phonebook/edit', method: :post do %>
+        <%= hidden_field_tag :old_name, name %>
+        <%= text_field_tag :name, name %>
+        <%= text_field_tag :numbers, numbers.join(', ') %>
+        <%= submit_tag "Редагувати" %>
+      <% end %>
+      <%= form_with url: '/phonebook/delete', method: :post do %>
+        <%= hidden_field_tag :name, name %>
+        <%= submit_tag "Видалити" %>
+      <% end %>
+    </li>
+  <% end %>
+</ul>
+
+<h2>Файл</h2>
+<%= link_to "Зберегти в JSON", '/phonebook/save-json' %> |
+<%= link_to "Зберегти в YAML", '/phonebook/save-yaml' %> |
+<%= link_to "Завантажити з JSON", '/phonebook/load-json' %> |
+<%= link_to "Завантажити з YAML", '/phonebook/load-yaml' %>
