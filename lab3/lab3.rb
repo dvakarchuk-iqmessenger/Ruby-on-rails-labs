@@ -5,8 +5,8 @@ class PhoneNumber
   attr_accessor :number
 
   def initialize(number)
-    @number = number.strip
     validate!
+    @number = number.strip
   end
 
   def to_s
