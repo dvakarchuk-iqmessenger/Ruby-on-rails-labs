@@ -10,33 +10,26 @@ class Phonebook
   end
 
   def run
-    loop do
-      puts "\n--- Телефонний довідник ---"
-      puts "1. Переглянути всі контакти"
-      puts "2. Додати контакт"
-      puts "3. Редагувати контакт"
-      puts "4. Видалити контакт"
-      puts "5. Пошук контакту"
-      puts "6. Зберегти у JSON"
-      puts "7. Зберегти у YAML"
-      puts "8. Завантажити з JSON"
-      puts "9. Завантажити з YAML"
-      puts "0. Вийти"
-      print "Ваш вибір: "
-      case gets.to_i
-      when 1 then list_contacts
-      when 2 then add_contact
-      when 3 then edit_contact
-      when 4 then delete_contact
-      when 5 then search_contact
-      when 6 then save_to_json
-      when 7 then save_to_yaml
-      when 8 then load_from_json
-      when 9 then load_from_yaml
-      when 0 then break
-      else puts "Невірний вибір."
-      end
-    end
+    add_contact("Олег", ["123-456", "789-000"])
+    add_contact("Ірина", ["555-555"])
+    add_contact("Андрій", ["321-654"])
+
+    list_contacts
+
+    edit_contact("Олег", ["000-111", "222-333"])
+
+    search_contact("Олег")
+
+    delete_contact("Ірина")
+
+    save_to_json
+    save_to_yaml
+
+    @contacts = {}
+    load_from_json
+    load_from_yaml
+
+    list_contacts
   end
 
   def list_contacts
@@ -50,47 +43,34 @@ class Phonebook
     end
   end
 
-  def add_contact
-    print "Введіть ім'я нового контакту: "
-    name = gets.strip
+  def add_contact(name, phones)
     if @contacts.key?(name)
       puts "Контакт вже існує. Додайте або відредагуйте його."
     else
-      print "Введіть номери телефону через кому: "
-      phones = gets.strip.split(',').map(&:strip)
       @contacts[name] = phones
-      puts "Контакт додано."
+      puts "Контакт '#{name}' додано."
     end
   end
 
-  def edit_contact
-    print "Введіть ім'я контакту для редагування: "
-    name = gets.strip
+  def edit_contact(name, new_phones)
     if @contacts.key?(name)
-      puts "Поточні номери: #{@contacts[name].join(', ')}"
-      print "Введіть нові номери телефону через кому: "
-      phones = gets.strip.split(',').map(&:strip)
-      @contacts[name] = phones
-      puts "Контакт оновлено."
+      @contacts[name] = new_phones
+      puts "Контакт '#{name}' оновлено."
     else
       puts "Контакт не знайдено."
     end
   end
 
-  def delete_contact
-    print "Введіть ім'я контакту для видалення: "
-    name = gets.strip
+  def delete_contact(name)
     if @contacts.delete(name)
-      puts "Контакт видалено."
+      puts "Контакт '#{name}' видалено."
     else
       puts "Контакт не знайдено."
     end
   end
 
-  def search_contact
-    print "Введіть ім'я або частину імені для пошуку: "
-    query = gets.strip.downcase
-    results = @contacts.select { |name, _| name.downcase.include?(query) }
+  def search_contact(query)
+    results = @contacts.select { |name, _| name.downcase.include?(query.downcase) }
     if results.empty?
       puts "Контакти не знайдені."
     else
